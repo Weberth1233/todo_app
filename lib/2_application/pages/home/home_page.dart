@@ -15,10 +15,15 @@ class HomePage extends StatefulWidget {
 
   final int index;
 
+  static PageConfig pageConfig = PageConfig(
+    icon: Icons.home_rounded,
+    name: 'home',
+  );
+
   static List<PageConfig> tabs = [
     DashboardPage.pageConfig,
     OverviewPage.pageConfig,
-    SettingPage.pageConfig,
+    // SettingPage.pageConfig,
   ];
 
   @override
@@ -47,6 +52,11 @@ class _HomePageState extends State<HomePage> {
               Breakpoints.mediumAndUp: SlotLayout.from(
                 key: const Key('primary-navigation-medium'),
                 builder: (context) => AdaptiveScaffold.standardNavigationRail(
+                  trailing: IconButton(
+                    onPressed: () =>
+                        context.pushNamed(SettingPage.pageConfig.name),
+                    icon: Icon(SettingPage.pageConfig.icon),
+                  ),
                   selectedLabelTextStyle:
                       TextStyle(color: theme.colorScheme.onBackground),
                   selectedIconTheme:
@@ -105,5 +115,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _tapOnNavigationDestination(BuildContext context, int index) =>
-      context.go('/home/${HomePage.tabs[index].name}');
+      context.goNamed(HomePage.pageConfig.name, params: {
+        'tab': HomePage.tabs[index].name,
+      });
 }
